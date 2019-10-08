@@ -9,6 +9,10 @@ const app = express();
 const port = 8000;
 
 
+/*express cant process URL encoded forms on its own, so we have to parse t
+he body info before being able to send it to the database.  */
+app.use(bodyParser.urlencoded({extended: true}))
+
 /*  now,
 step 1. I want my server to listen to an http request by sending in
 a requestwith a port number and a response which ends up being
@@ -20,11 +24,9 @@ on index.js file*/
 
 /* step 3. we then require routes inside of the server like so*/
 require('./app/routes')(app, {});
-
+/* step 4. pass params to the database */
 
 /* step 1*/
 app.listen(port, ()=> {
   console.log("We goooood" + port)
 })
-
-/* making CRUD routes */
