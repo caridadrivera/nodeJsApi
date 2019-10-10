@@ -3,7 +3,7 @@
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
-
+const db = require('./config/db');
 const app = express();
 
 const port = 8000;
@@ -23,10 +23,14 @@ folder for every single route, which gets exported then imported into the master
 on index.js file*/
 
 /* step 3. we then require routes inside of the server like so*/
-require('./app/routes')(app, {});
-/* step 4. pass params to the database */
 
-/* step 1*/
-app.listen(port, ()=> {
-  console.log("We goooood" + port)
+
+mongoose.connect(db.url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, database) => {
+  if(err) return console.log(err)
+  require('./app/routes')(app, database);
+  /* step 4. pass params to the database */
+  /* step 1*/
+  app.listen(port, ()=> {
+    console.log("We goooood" + port)
+  })
 })
